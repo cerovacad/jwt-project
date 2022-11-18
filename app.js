@@ -2,13 +2,17 @@ require("./config/database").connect();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+var cors = require("cors");
+var bodyParser = require('body-parser')
+
 
 const User = require("./model/user");
 const auth = require("./middleware/auth");
 
 const app = express();
 
-app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json({ type: 'application/json' }))
 
 app.post("/register", async (req, res) => {
   try {
@@ -46,7 +50,7 @@ app.post("/register", async (req, res) => {
 
     // return new user
     res.status(201).json({
-      message: 'Success'
+      message: "Success",
     });
   } catch (err) {
     console.log(err);
@@ -55,6 +59,8 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
+    console.log("###########################");
+    console.log(req.body);
     // Get user input
     const { email, password } = req.body;
 
